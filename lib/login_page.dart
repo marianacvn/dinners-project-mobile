@@ -1,6 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/cadastro_page.dart';
 import 'package:flutter_application_1/home_page.dart';
+
+import 'connection/cliente.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class Loginpage extends StatefulWidget {
 }
 
 class _LoginpageState extends State<Loginpage> {
+  Cliente clienteService = Cliente();
   String email = '';
   String senha = '';
 
@@ -75,5 +79,6 @@ class _LoginpageState extends State<Loginpage> {
             )),
       ),
     ));
+   
   }
 }

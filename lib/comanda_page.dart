@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/connection/pedido.dart';
 
 class ComandaPage extends StatefulWidget {
   const ComandaPage({Key? key}) : super(key: key);
@@ -8,6 +9,8 @@ class ComandaPage extends StatefulWidget {
 }
 
 class _ComandaPageState extends State<ComandaPage> {
+  Pedido pedidoService = Pedido();
+  
   Widget _itemComanda(BuildContext context, int index) {
     return SizedBox(
       width: 300,

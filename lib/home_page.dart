@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/mesaModel.dart';
+
+import 'connection/mesa.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,6 +14,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
+  Mesa mesaService = Mesa();
 
   @override
   void initState() {
@@ -49,8 +53,8 @@ class _HomePageState extends State<HomePage>
                       style:
                           ElevatedButton.styleFrom(primary: Colors.redAccent),
                       child: const Text('Sim'),
-                      onPressed: () =>
-                          Navigator.of(context).pushNamed('/cardapio'),
+                      onPressed: () => Navigator.pushNamed(context, '/cardapio',
+                              arguments: MesaModel(index)),
                     ),
                     ElevatedButton(
                       style:
@@ -98,14 +102,27 @@ class _HomePageState extends State<HomePage>
         title: const Text("Reserva de Mesas"),
         backgroundColor: Colors.red[900],
       ),
-      body: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 3 / 2,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20),
-          itemBuilder: _cardTable,
-          itemCount: 30),
+      body: Container(
+        child: FutureBuilder<List>(
+          future: mesaService.listarMesa(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20),
+                  itemBuilder: _cardTable,
+                  itemCount: snapshot.data?.length);
+            } else {
+              return const Center(
+                child: Text('Não foi encontrado'),
+              );
+            }
+          },
+        ),
+      ),
     );
   }
 }

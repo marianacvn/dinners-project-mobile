@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Pedido {
-  String baseUrl = "http://127.0.0.1:8000/api/pedido/";
+  String baseUrl = "http://192.168.0.101:8000/api/pedido/";
 
   Future<List> listarPedido() async {
     try {
@@ -15,6 +15,23 @@ class Pedido {
       }
     } catch (e) {
       return Future.error(e);
+    }
+  }
+
+  Future<List> enviarPedido(int mesa, int cliente, List produto) async {
+    final http.Response response = await http.post(Uri.parse(baseUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'mesa': mesa,
+          'cliente': cliente,
+          'produto': produto,
+        }));
+    if (response.statusCode == 201) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Não foi possível carregar os pedidos');
     }
   }
 }
