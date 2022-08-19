@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/connection/pedido.dart';
+import 'package:flutter_application_1/models/pedidoModel.dart';
 
 class ComandaPage extends StatefulWidget {
   const ComandaPage({Key? key}) : super(key: key);
@@ -10,18 +11,18 @@ class ComandaPage extends StatefulWidget {
 
 class _ComandaPageState extends State<ComandaPage> {
   Pedido pedidoService = Pedido();
-  
-  Widget _itemComanda(BuildContext context, int index) {
+
+  Widget _itemComanda(BuildContext context, int index, PedidoModel pedido) {
     return SizedBox(
       width: 300,
       height: 40,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Padding(
             padding: EdgeInsets.all(5),
             child: Text(
-              'Itens do Pedido,',
+              'Item ${pedido.produto[index]}',
               style: TextStyle(
                 color: Colors.black,
                 fontFamily: 'Montserrat-Light',
@@ -58,6 +59,9 @@ class _ComandaPageState extends State<ComandaPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pedidoModel =
+        ModalRoute.of(context)!.settings.arguments as PedidoModel;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -69,9 +73,9 @@ class _ComandaPageState extends State<ComandaPage> {
       body: Column(
         children: [
           Row(
-            children: const [
+            children: [
               Text(
-                'Mesa:',
+                'Mesa: ${pedidoModel.mesa}',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -94,8 +98,10 @@ class _ComandaPageState extends State<ComandaPage> {
           ),
           Flexible(
             child: ListView.builder(
-              itemBuilder: _itemComanda,
-              itemCount: 5,
+              itemBuilder: (context, i) {
+                return _itemComanda(context, i, pedidoModel);
+              },
+              itemCount: pedidoModel.produto.length,
             ),
           )
         ],
@@ -106,7 +112,42 @@ class _ComandaPageState extends State<ComandaPage> {
             Padding(
               padding: const EdgeInsets.only(left: 299),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        color: Colors.white,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Text(
+                                  'Deseja realmente finalizar e chamar o garçom?'),
+                              const SizedBox(
+                                height: 13,
+                              ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.redAccent),
+                                  child: const Text('Sim'),
+                                  onPressed: () =>
+                                      Navigator.of(context).pushNamed('/')),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.redAccent),
+                                child: const Text('Não'),
+                                onPressed: () => Navigator.pop(context),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: const Text(
                   'Finalizar',
                   style: TextStyle(

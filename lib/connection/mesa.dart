@@ -1,9 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/models/mesaModel.dart';
 import 'package:http/http.dart' as http;
 
 class Mesa {
-  String baseUrl = "http://192.168.0.101:8000/api/mesa/";
+  String baseUrl = "http://10.0.2.2:8000/api/mesa/";
 
   Future<List> listarMesa() async {
     try {
@@ -17,4 +18,6 @@ class Mesa {
       return Future.error(e);
     }
   }
+
+  buscarPorId(int index) async {}
 }

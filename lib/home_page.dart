@@ -14,7 +14,9 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
-  Mesa mesaService = Mesa();
+  // Mesa mesaService = Mesa();
+
+  Future<List> mesas = Mesa().listarMesa();
 
   @override
   void initState() {
@@ -30,44 +32,75 @@ class _HomePageState extends State<HomePage>
     super.initState();
   }
 
-  Widget _cardTable(BuildContext context, int index) {
-    index = index + 1;
+  Widget _cardTable(BuildContext context, MesaModel mesaModel) {
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              height: 200,
-              color: Colors.white,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const Text('Deseja realmente reservar esta mesa?'),
-                    const SizedBox(
-                      height: 13,
-                    ),
-                    ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.redAccent),
-                      child: const Text('Sim'),
-                      onPressed: () => Navigator.pushNamed(context, '/cardapio',
-                              arguments: MesaModel(index)),
-                    ),
-                    ElevatedButton(
-                      style:
-                          ElevatedButton.styleFrom(primary: Colors.redAccent),
-                      child: const Text('Não'),
-                      onPressed: () => Navigator.pop(context),
-                    )
-                  ],
+        if (mesaModel.statusMesa == false) {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 200,
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Esta mesa já está reservada!'),
+                      const SizedBox(
+                        height: 13,
+                      ),
+                      ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.redAccent),
+                        child: const Text('Voltar'),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        );
+              );
+            },
+          );
+        } else {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 200,
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const Text('Deseja realmente reservar esta mesa?'),
+                      const SizedBox(
+                        height: 13,
+                      ),
+                      ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.redAccent),
+                        child: const Text('Sim'),
+                        onPressed: () => Navigator.pushNamed(
+                            context, '/cardapio',
+                            arguments: MesaModel(
+                                mesaModel.idMesa, mesaModel.statusMesa)),
+                      ),
+                      ElevatedButton(
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.redAccent),
+                        child: const Text('Não'),
+                        onPressed: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        }
       },
       child: Card(
         color: Colors.white,
@@ -78,11 +111,17 @@ class _HomePageState extends State<HomePage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.table_bar, color: Colors.green, size: 50),
+                Icon(Icons.table_bar,
+                    color: mesaModel.statusMesa == true
+                        ? Colors.green
+                        : Colors.red,
+                    size: 50),
                 Text(
-                  '$index',
+                  '${mesaModel.idMesa}',
                   style: TextStyle(
-                      color: Colors.green,
+                      color: mesaModel.statusMesa == true
+                          ? Colors.green
+                          : Colors.red,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),
                 )
@@ -104,7 +143,7 @@ class _HomePageState extends State<HomePage>
       ),
       body: Container(
         child: FutureBuilder<List>(
-          future: mesaService.listarMesa(),
+          future: mesas,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return GridView.builder(
@@ -113,7 +152,13 @@ class _HomePageState extends State<HomePage>
                       childAspectRatio: 3 / 2,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20),
-                  itemBuilder: _cardTable,
+                  // itemBuilder: _cardTable,
+                  itemBuilder: (context, i) {
+                    return _cardTable(
+                        context,
+                        MesaModel(snapshot.data![i]['id'],
+                            snapshot.data![i]['statusmesa']));
+                  },
                   itemCount: snapshot.data?.length);
             } else {
               return const Center(

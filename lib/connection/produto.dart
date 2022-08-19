@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Produto {
-  String baseUrl = "http://192.168.0.101:8000/api/produto/";
+  String baseUrl = "http://10.0.2.2:8000/api/produto/";
 
   Future<List> listarPrdouto() async {
     try {

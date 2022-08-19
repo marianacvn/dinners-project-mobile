@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/connection/cliente.dart';
 
 class Cadastropage extends StatefulWidget {
   const Cadastropage({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class _CadastropageState extends State<Cadastropage> {
   String email = '';
   String senha = '';
   String confSenha = '';
+
+  Cliente clienteService = Cliente();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,6 @@ class _CadastropageState extends State<Cadastropage> {
                           onChanged: (text) {
                             nome = text;
                           },
-                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               labelText: 'Nome', border: OutlineInputBorder()),
                         ),
@@ -48,7 +50,7 @@ class _CadastropageState extends State<Cadastropage> {
                           onChanged: (text) {
                             email = text;
                           },
-                          obscureText: true,
+                          keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               labelText: 'Email', border: OutlineInputBorder()),
                         ),
@@ -73,7 +75,11 @@ class _CadastropageState extends State<Cadastropage> {
                         ),
                         SizedBox(height: 15),
                         ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              clienteService.enviarCliente(
+                                  nome, email, senha, confSenha);
+                              Navigator.of(context).pushNamed('/login');
+                            },
                             child: const Text('Cadastrar'),
                             style: ElevatedButton.styleFrom(
                               primary:

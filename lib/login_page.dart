@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/cadastro_page.dart';
 import 'package:flutter_application_1/home_page.dart';
@@ -16,6 +15,12 @@ class _LoginpageState extends State<Loginpage> {
   Cliente clienteService = Cliente();
   String email = '';
   String senha = '';
+
+  bool logado = false;
+
+  _realizarLogin(BuildContext context, String login, String senha) async {
+    logado = await clienteService.listarCliente(login, senha);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +57,10 @@ class _LoginpageState extends State<Loginpage> {
                 SizedBox(height: 15),
                 ElevatedButton(
                     onPressed: () {
-                      if (email == 'admin@admin.com' && senha == 'admin') {
+                      _realizarLogin(context, email, senha);
+                      if (logado == true) {
                         Navigator.of(context).pushNamed('/');
+                        logado = false;
                       }
                     },
                     child: const Text('Entrar'),
@@ -79,6 +86,5 @@ class _LoginpageState extends State<Loginpage> {
             )),
       ),
     ));
-   
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/connection/pedido.dart';
 import 'package:flutter_application_1/models/mesaModel.dart';
+import 'package:flutter_application_1/models/pedidoModel.dart';
 
 import 'connection/produto.dart';
 
@@ -81,7 +82,8 @@ class _MenuPageState extends State<MenuPage> {
               child: TextButton(
                 onPressed: () {
                   pedidoService.enviarPedido(mesamodel.idMesa, 1, [1, 2]);
-                  Navigator.of(context).pushNamed('/comanda');
+                  Navigator.pushNamed(context, '/comanda',
+                      arguments: PedidoModel(mesamodel.idMesa, 1, [1, 2]));
                 },
                 child: const Text(
                   'Finalizar Pedido',
@@ -163,7 +165,9 @@ class _MenuPageState extends State<MenuPage> {
                                     borderRadius: BorderRadius.circular(0.0),
                                     side: const BorderSide(color: Colors.red),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    print('teste');
+                                  },
                                   backgroundColor: Colors.redAccent,
                                   child: const Icon(
                                     Icons.horizontal_rule,
