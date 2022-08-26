@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/clienteModel.dart';
 import 'package:flutter_application_1/models/mesaModel.dart';
+import 'package:flutter_application_1/models/pedidoModel.dart';
 
 import 'connection/mesa.dart';
 
@@ -33,6 +35,9 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _cardTable(BuildContext context, MesaModel mesaModel) {
+
+    final clienteModel = ModalRoute.of(context)!.settings.arguments as ClienteModel;
+
     return GestureDetector(
       onTap: () {
         if (mesaModel.statusMesa == false) {
@@ -85,8 +90,8 @@ class _HomePageState extends State<HomePage>
                         child: const Text('Sim'),
                         onPressed: () => Navigator.pushNamed(
                             context, '/cardapio',
-                            arguments: MesaModel(
-                                mesaModel.idMesa, mesaModel.statusMesa)),
+                            arguments: PedidoModel(
+                                mesaModel.idMesa, clienteModel.idCliente, [])),
                       ),
                       ElevatedButton(
                         style:

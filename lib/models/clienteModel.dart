@@ -1,5 +1,5 @@
-class clienteModel {
-  String nome;
+class ClienteModel {
+  int idCliente;
 
-  clienteModel(this.nome);
+  ClienteModel(this.idCliente);
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_application_1/models/clienteModel.dart';
 import 'package:http/http.dart' as http;
 
 class Cliente {
@@ -13,8 +14,6 @@ class Cliente {
 
         List listaUsuarios = jsonDecode(response.body);
         for (var user in listaUsuarios) {
-          print(user['email']);
-          print(email);
           if (user['email'] == email && user['senha'] == senha) {
             confirmar = true;
           }
@@ -25,6 +24,49 @@ class Cliente {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<ClienteModel> getCliente(String email, String senha) async {
+    try {
+      var response = await http.get(Uri.parse(baseUrl));
+      if (response.statusCode == 200) {
+        ClienteModel cliente = ClienteModel(0);
+
+        List listaUsuarios = jsonDecode(response.body);
+        for (var user in listaUsuarios) {
+          if (user['email'] == email && user['senha'] == senha) {
+            cliente = ClienteModel(user['id']);
+          }
+        }
+        return cliente;
+      } else {
+        throw Exception('Cliente náo encontrado!');
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  
+  Future<ClienteModel> getClientePorId(int id) async {
+    try {
+      var response = await http.get(Uri.parse(baseUrl));
+      if (response.statusCode == 200) {
+        ClienteModel cliente = ClienteModel(0);
+
+        List listaUsuarios = jsonDecode(response.body);
+        for (var user in listaUsuarios) {
+          if (user['id'] == id) {
+            cliente = ClienteModel(user['id']);
+          }
+        }
+        return cliente;
+      } else {
+        throw Exception('Cliente náo encontrado!');
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 

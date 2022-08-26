@@ -1,12 +1,12 @@
 import 'dart:ffi';
 
+class ProdutoModel {
+  int idProduto;
+  String nomeproduto;
+  String descricaoproduto;
+  double preco;
+  double quantidade;
 
-class produtoModel {
-    String nomeproduto;
-    String descricaoproduto;
-    Float preco;
-    Float quantidade;
-
-  produtoModel(
-      this.nomeproduto, this.descricaoproduto, this.preco, this.quantidade);
+  ProdutoModel(this.idProduto, this.nomeproduto, this.descricaoproduto,
+      this.preco, this.quantidade);
 }

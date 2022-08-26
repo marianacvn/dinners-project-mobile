@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/cadastro_page.dart';
 import 'package:flutter_application_1/home_page.dart';
+import 'package:flutter_application_1/models/clienteModel.dart';
 
 import 'connection/cliente.dart';
 
@@ -17,9 +18,14 @@ class _LoginpageState extends State<Loginpage> {
   String senha = '';
 
   bool logado = false;
+  ClienteModel clienteModel = ClienteModel(0);
 
   _realizarLogin(BuildContext context, String login, String senha) async {
     logado = await clienteService.listarCliente(login, senha);
+  }
+
+  _pegarCliente(BuildContext context, String login, String senha) async {
+    clienteModel = await clienteService.getCliente(login, senha);
   }
 
   @override
@@ -58,8 +64,10 @@ class _LoginpageState extends State<Loginpage> {
                 ElevatedButton(
                     onPressed: () {
                       _realizarLogin(context, email, senha);
+                      _pegarCliente(context, email, senha);
                       if (logado == true) {
-                        Navigator.of(context).pushNamed('/');
+                        Navigator.pushNamed(context, '/',
+                            arguments: clienteModel);
                         logado = false;
                       }
                     },

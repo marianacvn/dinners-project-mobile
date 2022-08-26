@@ -18,7 +18,7 @@ class Pedido {
     }
   }
 
-  Future<List> enviarPedido(int mesa, int cliente, List produto) async {
+  Future<bool> enviarPedido(int mesa, int cliente, List<int> produto) async {
     final http.Response response = await http.post(Uri.parse(baseUrl),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -29,7 +29,7 @@ class Pedido {
           'produto': produto,
         }));
     if (response.statusCode == 201) {
-      return jsonDecode(response.body);
+      return true;
     } else {
       throw Exception('Não foi possível carregar os pedidos');
     }
