@@ -1,16 +1,20 @@
-# flutter_application_1
+# Projeto Mobile 2021.2 - Dinner - Table reservation and Request
 
-A new Flutter project.
+## Projeto de Desenvolvimento Mobile - UFRPE - UAST - 2021.2
 
-## Getting Started
+* Desenvolvimento de uma aplicação para android de um restaurante que vai possuir a opção de reservar a mesa com numeração, visualizar cardápio dos produtos ofertados nesse estabelecimento com imagem e valor, e também a opção de realizar pedido pelo cardápio. Por fim, será notificado ao estabelecimento ao final, a opção de finalizar notificando o garçom para pagamento.
 
-This project is a starting point for a Flutter application.
+### Funcionamento do Aplicativo na Versão 1.0 
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+![29 08 2022_10 43 16_REC_](https://user-images.githubusercontent.com/59375940/187218819-d74824e5-8484-42b0-978f-b32937b566b9.gif)
+
+
+
+## Tecnologias Utilizadas 
+
+* Django
+* Flutter
